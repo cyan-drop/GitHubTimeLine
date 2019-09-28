@@ -1,0 +1,6 @@
+framework module Pods_GitHubTimeLine {
+  umbrella header "Pods-GitHubTimeLine-umbrella.h"
+
+  export *
+  module * { export * }
+}
