@@ -23,147 +23,132 @@ final class TimeLineViewReactor: Reactor {
     
     enum Mutation {
         case setQuery(String?)
-        case setRepos([String], nextPage: Int?)
-        case appendRepos([String], nextPage: Int?)
         case setLoadingNextPage(Bool)
-        case setSections([RepositoryListSection])
+        case setRepos([RepositoryListSection], nextPage: Int?, error: String?)
+        case appendRepos([RepositoryListSection], nextPage: Int?, error: String?)
+        case setSections([RepositoryListSection], error: String?, since: Int?)
+        case appendSections([RepositoryListSection], error: String?, since: Int?)
     }
     
     struct State {
         var query: String?
-        var repos: [String] = []
-        var sections: [RepositoryListSection]=[]
+        var repos: [RepositoryListSection]
         var nextPage: Int?
         var since: Int?
         var isLoadingNextPage: Bool = false
+        var error: String?
     }
     
-    let initialState = State()
+    let initialState: State
+    
+    init() {
+        self.initialState = State(
+            query: nil,
+            repos: [RepositoryListSection(model: Void(), items: [])],
+            nextPage: 0,
+            since: 0,
+            isLoadingNextPage: false,
+            error: ""
+        )
+    }
     
     func mutate(action: Action) -> Observable<Mutation> {
-        var result: Observable<Mutation>
+        let loadRepositoryManager = LoadRepositoryManager()
+      
         switch action {
         case .loadRepository:
             return Observable.concat([
                 Observable.just(Mutation.setQuery("")),
-                self.loadAll(since: 0)
+                loadRepositoryManager.loadAll(since: 0)
                     .takeUntil(self.action.filter(Action.isUpdateQueryAction))
-                    .map { Mutation.setSections([RepositoryListSection(model: Void(), items: $0)]) }
-                ])
-            
+                    .map{ repo, error in
+                        let since = repo.last?.id
+                        let sectionItems = repo.map(RepositoryInfoCellReactor.init)
+                        let section = RepositoryListSection(model: Void(), items: sectionItems)
+                        return .setSections([section], error: error, since: since)
+                }])
+        
         case let .searchRepository(query):
             return Observable.concat([
-                    Observable.just(Mutation.setQuery(query)),
-                    self.search(query: query, page: 1)
-                        .takeUntil(self.action.filter(Action.isUpdateQueryAction))
-                        .map { Mutation.setRepos($0, nextPage: $1) },
-                    ])
+                Observable.just(Mutation.setQuery(query)),
+                loadRepositoryManager.search(query: query, page: 1)
+                    .takeUntil(self.action.filter(Action.isUpdateQueryAction))
+                    .map { repo, page, error in
+                        let sectionItems = repo.map(RepositoryInfoCellReactor.init)
+                        let section = RepositoryListSection(model: Void(), items: sectionItems)
+                        return .setRepos([section], nextPage: page, error: error)
+                }])
             
         case .loadNextPage:
             guard !self.currentState.isLoadingNextPage else { return Observable.empty() }
             guard let page = self.currentState.nextPage else { return Observable.empty() }
             
-//            guard let since = self.currentState.since else { return Observable.empty() }
+            guard let since = self.currentState.since else { return Observable.empty() }
             
-            if page != 0 {
-                result = self.search(query: self.currentState.query, page: page)
-                    .takeUntil(self.action.filter(Action.isUpdateQueryAction))
-                    .map { Mutation.appendRepos($0, nextPage: $1) }
-            } else {
-                result =  self.loadAll(since: 123)
-                    .takeUntil(self.action.filter(Action.isUpdateQueryAction))
-                    .map {
-                        Mutation.setSections([RepositoryListSection(model: Void(), items: $0)])
+            func setType() -> Observable<Mutation>{
+                if page != 0 {
+                    return loadRepositoryManager.search(query: self.currentState.query, page: 1)
+                        .takeUntil(self.action.filter(Action.isUpdateQueryAction))
+                        .map { repo, page, error in
+                            let sectionItems = repo.map(RepositoryInfoCellReactor.init)
+                            let section = RepositoryListSection(model: Void(), items: sectionItems)
+                            return .appendRepos([section], nextPage: page, error: error)
+                    }
+                } else {
+                    return loadRepositoryManager
+                    .loadAll(since: since)
+                        .takeUntil(self.action.filter(Action.isUpdateQueryAction))
+                        .map{ repo, error in
+                            let newSince = repo.last?.id
+                            let sectionItems = repo.map(RepositoryInfoCellReactor.init)
+                            let section = RepositoryListSection(model: Void(), items: sectionItems)
+                            return .appendSections([section], error: error, since: newSince)}
                 }
             }
-            return result
-
+            
+            return Observable.concat([
+                Observable.just(Mutation.setLoadingNextPage(true)),
+                setType(),
+                Observable.just(Mutation.setLoadingNextPage(false)),
+                ])
         }
-        
-        
     }
     
     func reduce(state: State, mutation: Mutation) -> State {
+        var state = state
         switch mutation {
         case let .setQuery(query):
-            var newState = state
-            newState.query = query
-            return newState
-            
-        case let .setRepos(repos, nextPage):
-            var newState = state
-            newState.repos = repos
-            newState.nextPage = nextPage
-            return newState
-            
-        case let .appendRepos(repos, nextPage):
-            var newState = state
-            newState.repos.append(contentsOf: repos)
-            newState.nextPage = nextPage
-            return newState
+            state.query = query
+            return state
             
         case let .setLoadingNextPage(isLoadingNextPage):
-            var newState = state
-            newState.isLoadingNextPage = isLoadingNextPage
-            return newState
+            state.isLoadingNextPage = isLoadingNextPage
+            return state
             
-        case let .setSections(sections):
-            var newState = state
-            print(sections)
-            newState.sections = sections
+        case let .setRepos(repos, nextPage, error):
+            state.repos = repos
+            state.nextPage = nextPage
+            state.error = error
+            return state
+            
+        case let .appendRepos(repos, nextPage, error):
+            state.repos.append(contentsOf: repos)
+            state.nextPage = nextPage
+            state.error = error
+            return state
+            
+        case let .setSections(sections, error, since):
+            state.repos = sections
+            state.error = error
+            state.since = since
+            return state
+            
+        case let .appendSections(sections, error, since):
+            state.repos.append(contentsOf: sections)
+            state.error = error
+            state.since = since
             return state
         }
-    }
-    
-    
-    private func searchUrl(for query: String?, page: Int) -> URL? {
-        guard let query = query, !query.isEmpty else { return nil }
-        return URL(string: "https://api.github.com/search/repositories?q=\(query)&page=\(page)")
-    }
-    
-    private func search(query: String?, page: Int) -> Observable<(repos: [String], nextPage: Int?)> {
-        let emptyResult: ([String], Int?) = ([], nil)
-        guard let url = self.searchUrl(for: query, page: page) else { return .just(emptyResult) }
-        return URLSession.shared.rx.json(url: url)
-            .map { json -> ([String], Int?) in
-                
-                guard let dict = json as? [String: Any] else { return emptyResult }
-                guard let items = dict["items"] as? [[String: Any]] else { return emptyResult }
-                let repos = items.compactMap { $0["full_name"] as? String }
-                let nextPage = repos.isEmpty ? nil : page + 1
-                return (repos, nextPage)
-            }
-            .do(onError: { error in
-                if case let .some(.httpRequestFailed(response, _)) = error as? RxCocoaURLError, response.statusCode == 403 {
-                    print("⚠️ GitHub API rate limit exceeded. Wait for 60 seconds and try again.")
-                }
-            })
-            .catchErrorJustReturn(emptyResult)
-    }
-    
-    
-    private func url() -> URL? {
-        return URL(string: "https://api.github.com/repositories")
-    }
-    
-    private func loadAll(since: Int?) -> Observable<([RepositoryInfoCellReactor])> {
-        let emptyResult: [RepositoryInfoCellReactor] = []
-        guard let url = self.url() else { return .just(emptyResult)}
-        
-        return URLSession.shared.rx.json(url: url)
-            .map { json -> ([RepositoryInfoCellReactor]) in
-                guard let dict = json as? [[String: Any]] else { return emptyResult }
-                let ss = dict.compactMap(Repository.init)
-                let sectionItems = ss.map(RepositoryInfoCellReactor.init)
-//                let section = RepositoryListSection(model: Void(), items: sectionItems)
-                return (sectionItems)
-            }
-            .do(onError: { error in
-                if case let .some(.httpRequestFailed(response, _)) = error as? RxCocoaURLError, response.statusCode == 403 {
-                    print("⚠️ GitHub API rate limit exceeded. Wait for 60 seconds and try again.")
-                }
-            })
-            .catchErrorJustReturn(emptyResult)
     }
 }
 
@@ -176,4 +161,6 @@ extension TimeLineViewReactor.Action {
         }
     }
 }
+
+
 

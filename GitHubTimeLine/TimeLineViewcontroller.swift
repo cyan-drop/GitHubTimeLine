@@ -14,56 +14,73 @@ import RxSwift
 import RxViewController
 import SafariServices
 import RxDataSources
-import ReusableKit
 
-final class TimeLineViewcontroller: UIViewController, StoryboardView {
-    
-    @IBOutlet weak var timeLineTableView: UITableView!
-//        {
-//        didSet {
-//            timeLineTableView.register(UINib(nibName: "RepositoryInfoCell", bundle: nil), forCellReuseIdentifier: "repositoryInfoCell")
-//        }
-//    }
+final class TimeLineViewcontroller: UIViewController, UITableViewDelegate, StoryboardView {
+
+    @IBOutlet weak var topButton: UIButton!
     @IBOutlet weak var timeLineSearchBar: UISearchBar!
+    @IBOutlet weak var timeLineTableView: UITableView!
+        {
+        didSet {
+            timeLineTableView.register(UINib(nibName: "RepositoryInfoCell", bundle: nil), forCellReuseIdentifier: "repositoryInfoCell")
+        }
+    }
+    private var refreshControl = UIRefreshControl()
+    private var alertController = UIAlertController()
     
     var disposeBag = DisposeBag()
-
-    
-    struct Reusable {
-        static let repositoryInfoCell = ReusableCell<RepositoryInfoCell>()
-    }
-    
-    
-    // MARK: Properties
     let dataSource = RxTableViewSectionedReloadDataSource<RepositoryListSection>(
         configureCell: { _, tableView, indexPath, reactor in
-            let cell = tableView.dequeue(Reusable.repositoryInfoCell, for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "repositoryInfoCell", for: indexPath) as! RepositoryInfoCell
             cell.reactor = reactor
             return cell
     })
-//
     
-    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         timeLineTableView.scrollIndicatorInsets.top = timeLineTableView.contentInset.top
-        timeLineSearchBar.placeholder = "Search repositry"
+        timeLineSearchBar.placeholder = NSLocalizedString("Search_Placeholder", comment: "")
         reactor = TimeLineViewReactor()
         
-        timeLineTableView.register(Reusable.repositoryInfoCell)
+        refreshControl.backgroundColor = UIColor.lightGray
+        self.timeLineTableView.addSubview(refreshControl)
   }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
     
+    func setAlert(message: String?) {
+        self.alertController = UIAlertController(title: NSLocalizedString("Alert_Title", comment: ""),
+                                                 message: message,
+                                                 preferredStyle: .alert)
+        let cancel = UIAlertAction(title: NSLocalizedString("Alert_Load_Limit_Error_OK", comment: ""), style: UIAlertAction.Style.cancel, handler: {
+            (action: UIAlertAction!) in
+        })
+        self.alertController.addAction(cancel)
+        self.present(self.alertController, animated: true, completion: nil)
+    }
+    
     
     func bind(reactor: TimeLineViewReactor) {
         
-        self.rx.viewWillAppear
+        self.timeLineTableView.rx.setDelegate(self).disposed(by: self.disposeBag)
+        self.dataSource.canEditRowAtIndexPath = { _, _  in true }
+        self.dataSource.canMoveRowAtIndexPath = { _, _  in true }
+        
+        self.rx.viewDidAppear
             .map { _ in Reactor.Action.loadRepository }
             .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        topButton.rx.tap
+            .subscribe({ [weak self] _ in
+                self?.timeLineTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+            })
             .disposed(by: disposeBag)
         
         timeLineSearchBar.rx.searchButtonClicked
@@ -72,11 +89,30 @@ final class TimeLineViewcontroller: UIViewController, StoryboardView {
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
+        timeLineSearchBar.rx.textDidBeginEditing
+            .subscribe({ [weak self] _ in
+                self?.timeLineTableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+            })
+            .disposed(by: disposeBag)
+        
         timeLineSearchBar.rx.cancelButtonClicked
             .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
             .map { Reactor.Action.loadRepository }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
+        
+        refreshControl.rx.controlEvent(.valueChanged)
+            .map { _ in Reactor.Action.loadRepository }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        
+        refreshControl.rx.controlEvent(.valueChanged)
+            .map { _ in self.refreshControl.isRefreshing }
+            .filter { $0 == true }
+            .bind(onNext: { [weak self] _ in
+                self?.refreshControl.endRefreshing()
+            })
         
         timeLineTableView.rx.contentOffset
             .filter { [weak self] offset in
@@ -89,26 +125,19 @@ final class TimeLineViewcontroller: UIViewController, StoryboardView {
             .disposed(by: disposeBag)
         
         
-        
-        
-//        reactor.state.map { $0.repos }
-//            .bind(to: timeLineTableView.rx.items(cellIdentifier: "repositoryInfoCell", cellType: RepositoryInfoCell.self)) { row, repo, cell in
-//                cell.nameLabel.text = re
-//
-//            }
-//        .disposed(by: disposeBag)
-        
-//        self.timeLineTableView.rx.setDelegate(self).disposed(by: self.disposeBag)
-        
-//        reactor.state.map { $0.sections }
-//            .bind(to: self.timeLineTableView.rx.items(cellIdentifier: "repositoryInfoCell", cellType: RepositoryInfoCell.self)) { row, repo, cell in
-//                }
-//                .disposed(by: self.disposeBag)
-        
-        reactor.state.map { $0.sections }
+        reactor.state.asObservable().map { $0.repos }
             .bind(to: self.timeLineTableView.rx.items(dataSource: self.dataSource))
             .disposed(by: self.disposeBag)
         
+        reactor.state.map { $0.error }
+            .distinctUntilChanged()
+            .bind(onNext: { error in
+                if error != "" && error != nil {
+                    self.setAlert(message: error)
+                }
+            })
+            .disposed(by: disposeBag)
+ 
         reactor.state.map { $0.query }
             .distinctUntilChanged()
             .map { $0 ?? "" }
@@ -120,21 +149,18 @@ final class TimeLineViewcontroller: UIViewController, StoryboardView {
                 guard let `self` = self else { return }
                 self.view.endEditing(true)
                 self.timeLineTableView.deselectRow(at: indexPath, animated: false)
-                guard let repo = reactor?.currentState.repos[indexPath.row] else { return }
-                guard let url = URL(string: "https://github.com/\(repo)") else { return }
+                guard let repo = reactor?.currentState.repos[indexPath.row].items[indexPath.row] else { return }
+                let name = repo.initialState.name
+                let owner = repo.initialState.owner
+                
+                guard let url = URL(string: "https://github.com/\(owner)/\(name)") else { return }
                 let safariVC = SFSafariViewController(url: url)
                 self.present(safariVC, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
+        
     }
 }
 
-extension TimeLineViewcontroller: UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
-}
 
 

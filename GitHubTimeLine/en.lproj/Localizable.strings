@@ -1,0 +1,16 @@
+#!/bin/sh
+
+#  Localizable.strings
+#  GitHubTimeLine
+#
+#  Created by Rinna Izumi on 2019/09/30.
+#  Copyright © 2019 cyan. All rights reserved.””
+
+//alertController
+"Alert_Title"="読み込みエラー";
+"Cancel"="キャンセル";
+"Alert_Load_Limit_Error"="GitHub API rate limit exceeded. Wait for 60 seconds and try again.";
+"Alert_Load_Limit_Error_OK"="OK";
+
+//timeLineSearchBar
+"Search_Placeholder"="Search repositry";

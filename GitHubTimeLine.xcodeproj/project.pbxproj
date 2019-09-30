@@ -11,7 +11,6 @@
 		7E4DEA491AC5B434F9B9D0C1 /* Pods_GitHubTimeLine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A502DB246534EB8DA0D657D /* Pods_GitHubTimeLine.framework */; };
 		C6CCCF1D2852AE2F956AB580 /* Pods_GitHubTimeLineTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62DB45AC152F19035600993D /* Pods_GitHubTimeLineTests.framework */; };
 		FD2B72B2233E53730011EC6F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2B72B1233E53730011EC6F /* AppDelegate.swift */; };
-		FD2B72B4233E53730011EC6F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2B72B3233E53730011EC6F /* ViewController.swift */; };
 		FD2B72B7233E53730011EC6F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FD2B72B5233E53730011EC6F /* Main.storyboard */; };
 		FD2B72B9233E53750011EC6F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD2B72B8233E53750011EC6F /* Assets.xcassets */; };
 		FD2B72BC233E53750011EC6F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FD2B72BA233E53750011EC6F /* LaunchScreen.storyboard */; };
@@ -23,6 +22,8 @@
 		FD2B72E6233E858E0011EC6F /* RepositoryInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD2B72E4233E858E0011EC6F /* RepositoryInfoCell.xib */; };
 		FD2B72EA233E939E0011EC6F /* RepositoryInfoCellReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2B72E9233E939E0011EC6F /* RepositoryInfoCellReactor.swift */; };
 		FD2B72EC233E94930011EC6F /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2B72EB233E94930011EC6F /* Repository.swift */; };
+		FDB34625234229E500460326 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FDB34624234229E500460326 /* Localizable.strings */; };
+		FDD95C212340562000FB3929 /* LoadRepositoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD95C202340562000FB3929 /* LoadRepositoryManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,7 +55,6 @@
 		F7478E31F1078E05C5878C97 /* Pods-GitHubTimeLine.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GitHubTimeLine.release.xcconfig"; path = "Pods/Target Support Files/Pods-GitHubTimeLine/Pods-GitHubTimeLine.release.xcconfig"; sourceTree = "<group>"; };
 		FD2B72AE233E53730011EC6F /* GitHubTimeLine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitHubTimeLine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD2B72B1233E53730011EC6F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		FD2B72B3233E53730011EC6F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		FD2B72B6233E53730011EC6F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FD2B72B8233E53750011EC6F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FD2B72BB233E53750011EC6F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -71,6 +71,8 @@
 		FD2B72E4233E858E0011EC6F /* RepositoryInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RepositoryInfoCell.xib; sourceTree = "<group>"; };
 		FD2B72E9233E939E0011EC6F /* RepositoryInfoCellReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryInfoCellReactor.swift; sourceTree = "<group>"; };
 		FD2B72EB233E94930011EC6F /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
+		FDB34624234229E500460326 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		FDD95C202340562000FB3929 /* LoadRepositoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadRepositoryManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,16 +152,15 @@
 			isa = PBXGroup;
 			children = (
 				FD2B72B1233E53730011EC6F /* AppDelegate.swift */,
-				FD2B72B3233E53730011EC6F /* ViewController.swift */,
 				FD2B72B5233E53730011EC6F /* Main.storyboard */,
 				FD2B72DF233E55F70011EC6F /* TimeLineViewcontroller.swift */,
-				FD2B72E3233E858E0011EC6F /* RepositoryInfoCell.swift */,
-				FD2B72E9233E939E0011EC6F /* RepositoryInfoCellReactor.swift */,
-				FD2B72EB233E94930011EC6F /* Repository.swift */,
-				FD2B72E4233E858E0011EC6F /* RepositoryInfoCell.xib */,
 				FD2B72E1233E56640011EC6F /* TimeLineViewReactor.swift */,
+				FDB3462723425BFE00460326 /* Manager */,
+				FDB3462623425B3400460326 /* DataModel */,
+				FDB3461F23421AAA00460326 /* TableViewCell */,
 				FD2B72B8233E53750011EC6F /* Assets.xcassets */,
 				FD2B72BA233E53750011EC6F /* LaunchScreen.storyboard */,
+				FDB34624234229E500460326 /* Localizable.strings */,
 				FD2B72BD233E53750011EC6F /* Info.plist */,
 			);
 			path = GitHubTimeLine;
@@ -181,6 +182,32 @@
 				FD2B72D3233E53750011EC6F /* Info.plist */,
 			);
 			path = GitHubTimeLineUITests;
+			sourceTree = "<group>";
+		};
+		FDB3461F23421AAA00460326 /* TableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				FD2B72E4233E858E0011EC6F /* RepositoryInfoCell.xib */,
+				FD2B72E3233E858E0011EC6F /* RepositoryInfoCell.swift */,
+				FD2B72E9233E939E0011EC6F /* RepositoryInfoCellReactor.swift */,
+			);
+			path = TableViewCell;
+			sourceTree = "<group>";
+		};
+		FDB3462623425B3400460326 /* DataModel */ = {
+			isa = PBXGroup;
+			children = (
+				FD2B72EB233E94930011EC6F /* Repository.swift */,
+			);
+			path = DataModel;
+			sourceTree = "<group>";
+		};
+		FDB3462723425BFE00460326 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				FDD95C202340562000FB3929 /* LoadRepositoryManager.swift */,
+			);
+			path = Manager;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -292,6 +319,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FDB34625234229E500460326 /* Localizable.strings in Resources */,
 				FD2B72BC233E53750011EC6F /* LaunchScreen.storyboard in Resources */,
 				FD2B72B9233E53750011EC6F /* Assets.xcassets in Resources */,
 				FD2B72B7233E53730011EC6F /* Main.storyboard in Resources */,
@@ -375,12 +403,12 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-GitHubTimeLine/Pods-GitHubTimeLine-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Differentiator/Differentiator.framework",
 				"${BUILT_PRODUCTS_DIR}/ReactorKit/ReactorKit.framework",
-				"${BUILT_PRODUCTS_DIR}/ReusableKit/ReusableKit.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxDataSources/RxDataSources.framework",
 				"${BUILT_PRODUCTS_DIR}/RxRelay/RxRelay.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/RxViewController/RxViewController.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
@@ -388,12 +416,12 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differentiator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactorKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReusableKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxDataSources.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxRelay.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxViewController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -453,7 +481,7 @@
 			files = (
 				FD2B72EC233E94930011EC6F /* Repository.swift in Sources */,
 				FD2B72E5233E858E0011EC6F /* RepositoryInfoCell.swift in Sources */,
-				FD2B72B4233E53730011EC6F /* ViewController.swift in Sources */,
+				FDD95C212340562000FB3929 /* LoadRepositoryManager.swift in Sources */,
 				FD2B72EA233E939E0011EC6F /* RepositoryInfoCellReactor.swift in Sources */,
 				FD2B72B2233E53730011EC6F /* AppDelegate.swift in Sources */,
 				FD2B72E0233E55F70011EC6F /* TimeLineViewcontroller.swift in Sources */,

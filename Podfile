@@ -11,7 +11,7 @@ target 'GitHubTimeLine' do
     pod 'ReactorKit'
     pod 'RxViewController'
     pod 'RxDataSources'
-    pod 'ReusableKit'
+    pod 'SDWebImage'
 
   target 'GitHubTimeLineTests' do
     inherit! :search_paths
