@@ -47,7 +47,7 @@ final class RepositoryInfoCell: UITableViewCell, StoryboardView {
         setAvatarFromUrl(avatar: reactor.currentState.avaterUrl)
     }
     
-    func setAvatarFromUrl(avatar: String?){
+    private func setAvatarFromUrl(avatar: String?){
         iconView!.sd_setImage(with: URL(string: avatar!), placeholderImage: nil, options: SDWebImageOptions.refreshCached, completed: { (image, error, cacheType, imageURL) in
             if image != nil {
                 self.iconView.image = image

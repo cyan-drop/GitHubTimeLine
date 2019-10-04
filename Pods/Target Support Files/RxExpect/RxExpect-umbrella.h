@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double RxBlockingVersionNumber;
-FOUNDATION_EXPORT const unsigned char RxBlockingVersionString[];
+FOUNDATION_EXPORT double RxExpectVersionNumber;
+FOUNDATION_EXPORT const unsigned char RxExpectVersionString[];
 

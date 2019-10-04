@@ -29,7 +29,7 @@ final class TimeLineViewcontroller: UIViewController, UITableViewDelegate, Story
     private var alertController = UIAlertController()
     
     var disposeBag = DisposeBag()
-    let dataSource = RxTableViewSectionedReloadDataSource<RepositoryListSection>(
+    private let dataSource = RxTableViewSectionedReloadDataSource<RepositoryListSection>(
         configureCell: { _, tableView, indexPath, reactor in
             let cell = tableView.dequeueReusableCell(withIdentifier: "repositoryInfoCell", for: indexPath) as! RepositoryInfoCell
             cell.reactor = reactor
@@ -54,7 +54,7 @@ final class TimeLineViewcontroller: UIViewController, UITableViewDelegate, Story
         super.viewDidAppear(animated)
     }
     
-    func setAlert(message: String?) {
+    private func setAlert(message: String?) {
         self.alertController = UIAlertController(title: NSLocalizedString("Alert_Title", comment: ""),
                                                  message: message,
                                                  preferredStyle: .alert)

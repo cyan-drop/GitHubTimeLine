@@ -14,7 +14,6 @@
 		FD2B72B7233E53730011EC6F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FD2B72B5233E53730011EC6F /* Main.storyboard */; };
 		FD2B72B9233E53750011EC6F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD2B72B8233E53750011EC6F /* Assets.xcassets */; };
 		FD2B72BC233E53750011EC6F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FD2B72BA233E53750011EC6F /* LaunchScreen.storyboard */; };
-		FD2B72C7233E53750011EC6F /* GitHubTimeLineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2B72C6233E53750011EC6F /* GitHubTimeLineTests.swift */; };
 		FD2B72D2233E53750011EC6F /* GitHubTimeLineUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2B72D1233E53750011EC6F /* GitHubTimeLineUITests.swift */; };
 		FD2B72E0233E55F70011EC6F /* TimeLineViewcontroller.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2B72DF233E55F70011EC6F /* TimeLineViewcontroller.swift */; };
 		FD2B72E2233E56640011EC6F /* TimeLineViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2B72E1233E56640011EC6F /* TimeLineViewReactor.swift */; };
@@ -22,6 +21,7 @@
 		FD2B72E6233E858E0011EC6F /* RepositoryInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD2B72E4233E858E0011EC6F /* RepositoryInfoCell.xib */; };
 		FD2B72EA233E939E0011EC6F /* RepositoryInfoCellReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2B72E9233E939E0011EC6F /* RepositoryInfoCellReactor.swift */; };
 		FD2B72EC233E94930011EC6F /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2B72EB233E94930011EC6F /* Repository.swift */; };
+		FD4514C123438751002EEBB1 /* TimeLineViewReactorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4514C023438751002EEBB1 /* TimeLineViewReactorTests.swift */; };
 		FDB34625234229E500460326 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FDB34624234229E500460326 /* Localizable.strings */; };
 		FDD95C212340562000FB3929 /* LoadRepositoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDD95C202340562000FB3929 /* LoadRepositoryManager.swift */; };
 /* End PBXBuildFile section */
@@ -60,7 +60,6 @@
 		FD2B72BB233E53750011EC6F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FD2B72BD233E53750011EC6F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FD2B72C2233E53750011EC6F /* GitHubTimeLineTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GitHubTimeLineTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		FD2B72C6233E53750011EC6F /* GitHubTimeLineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubTimeLineTests.swift; sourceTree = "<group>"; };
 		FD2B72C8233E53750011EC6F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FD2B72CD233E53750011EC6F /* GitHubTimeLineUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GitHubTimeLineUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD2B72D1233E53750011EC6F /* GitHubTimeLineUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubTimeLineUITests.swift; sourceTree = "<group>"; };
@@ -71,6 +70,7 @@
 		FD2B72E4233E858E0011EC6F /* RepositoryInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RepositoryInfoCell.xib; sourceTree = "<group>"; };
 		FD2B72E9233E939E0011EC6F /* RepositoryInfoCellReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryInfoCellReactor.swift; sourceTree = "<group>"; };
 		FD2B72EB233E94930011EC6F /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
+		FD4514C023438751002EEBB1 /* TimeLineViewReactorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeLineViewReactorTests.swift; sourceTree = "<group>"; };
 		FDB34624234229E500460326 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		FDD95C202340562000FB3929 /* LoadRepositoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadRepositoryManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -169,7 +169,7 @@
 		FD2B72C5233E53750011EC6F /* GitHubTimeLineTests */ = {
 			isa = PBXGroup;
 			children = (
-				FD2B72C6233E53750011EC6F /* GitHubTimeLineTests.swift */,
+				FD4514C023438751002EEBB1 /* TimeLineViewReactorTests.swift */,
 				FD2B72C8233E53750011EC6F /* Info.plist */,
 			);
 			path = GitHubTimeLineTests;
@@ -375,16 +375,20 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-GitHubTimeLineTests/Pods-GitHubTimeLineTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
+				"${BUILT_PRODUCTS_DIR}/RxRelay/RxRelay.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/RxBlocking/RxBlocking.framework",
+				"${BUILT_PRODUCTS_DIR}/RxExpect/RxExpect.framework",
 				"${BUILT_PRODUCTS_DIR}/RxTest/RxTest.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxRelay.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxBlocking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxExpect.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxTest.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -493,7 +497,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FD2B72C7233E53750011EC6F /* GitHubTimeLineTests.swift in Sources */,
+				FD4514C123438751002EEBB1 /* TimeLineViewReactorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

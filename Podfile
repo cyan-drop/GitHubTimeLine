@@ -16,8 +16,9 @@ target 'GitHubTimeLine' do
   target 'GitHubTimeLineTests' do
     inherit! :search_paths
     # Pods for testing
-    pod 'RxBlocking', '~> 5'
+    #pod 'RxBlocking', '~> 5'
     pod 'RxTest', '~> 5'
+    pod 'RxExpect'
   end
 
   target 'GitHubTimeLineUITests' do
